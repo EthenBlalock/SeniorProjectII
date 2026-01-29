@@ -6,12 +6,13 @@ import typing
 import uuid
 
 import CustomMethodsVI.Connection as Connection
+import CustomMethodsVI.Stream as Stream
 
 import Database
 
 
-def get_json_key(json: dict[str, ...], key: str, *types: type, can_be_none: bool = False, acceptor: typing.Callable[[typing.Any], bool] = None) -> typing.Any:
-	value: typing.Any = json.get(key)
+def get_json_key(json: dict[str, ...], key: str, *types: type, can_be_none: bool = False, acceptor: typing.Callable[[typing.Any], bool] = None, default: typing.Optional[typing.Any] = None) -> typing.Any:
+	value: typing.Any = json.get(key, default)
 	assert (isinstance(value, types) or (value is None and can_be_none)) and (not callable(acceptor) or acceptor(value)), 'Invalid JSON value'
 	return value
 
@@ -24,12 +25,14 @@ def handle_implicit_api(server: flask.Flask) -> None:
 	"""
 
 	api: Connection.FlaskServerAPI = Connection.FlaskServerAPI(server, '/react', requires_auth=True)
+	company_data: Database.MyDatabase = Database.MyDatabase.open('companies', create_if_not_found=False)
+	companies: dict[str, typing.Any] = company_data['Stocks'].wait()
+	company_data.close()
 
 	@api.connector
 	def on_connect(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> int:
 		print(f'React-API Connect: {session.token} @ {session.ip}')
-		print(json)
-		return 501
+		return 200
 
 	@api.disconnector
 	def on_disconnect(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> None:
@@ -38,6 +41,12 @@ def handle_implicit_api(server: flask.Flask) -> None:
 	@api.endpoint('/budget')
 	def on_budget(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> dict:
 		return NotImplemented
+
+	@api.endpoint('/companies')
+	def on_companies(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> list:
+		page: int = get_json_key(json, 'page', int, default=0)
+		page_size: int = 10
+		return Stream.LinqStream(companies.items()).skip(page * page_size).take(page_size).sort().transform(lambda pair: {'symbol': pair[0], 'name': pair[1]['Meta Data']['2. Name'], 'price': -1}).collect(list)
 
 	@api.endpoint('/stock')
 	def on_stock(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> dict:
@@ -89,7 +98,7 @@ def handle_user_api(server: flask.Flask) -> None:
 			result: dict | int = 500
 
 			try:
-				user: Database.MyDatabase = Database.MyDatabase.create(f'users.{username}', use_memory=True, crypt=password)
+				user: Database.MyDatabase = Database.MyDatabase.create(f'users.{username}', crypt=password)
 				users[session.token] = user
 				user['email'] = email
 				user.save_async().then(lambda p: print(f'New user created: \'{username}\''))
@@ -104,9 +113,12 @@ def handle_user_api(server: flask.Flask) -> None:
 			result: dict | int = 500
 
 			try:
-				user: Database.MyDatabase = Database.MyDatabase.open(f'users.{username}', use_memory=True, create_if_not_found=False, crypt=password)
+				user: Database.MyDatabase = Database.MyDatabase.open(f'users.{username}', create_if_not_found=False, crypt=password)
 				users[session.token] = user
 				result = {'error': None, 'user': user.stream().to_dictionary()}
+
+				for k, v in user:
+					print(k, v)
 			except FileNotFoundError:
 				result = {'error': 'NoSuchUser'}
 			except PermissionError:

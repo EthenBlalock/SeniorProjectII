@@ -1,0 +1,810 @@
+{
+  "Meta Data": {
+    "1. Information": "Stock Weekly Prices (open, high, low, close)",
+    "2. Universe": "Top 100 Stable U.S. Stocks (Project List)",
+    "3. Last Refreshed": "2026-01-26",
+    "4. Time Zone": "US/Eastern"
+  },
+  "Stocks": {
+    "AAPL": {
+      "Meta Data": {
+        "1. Symbol": "AAPL",
+        "2. Name": "Apple Inc.",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "MSFT": {
+      "Meta Data": {
+        "1. Symbol": "MSFT",
+        "2. Name": "Microsoft Corporation",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "GOOGL": {
+      "Meta Data": {
+        "1. Symbol": "GOOGL",
+        "2. Name": "Alphabet Inc. (Class A)",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "META": {
+      "Meta Data": {
+        "1. Symbol": "META",
+        "2. Name": "Meta Platforms, Inc.",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "NVDA": {
+      "Meta Data": {
+        "1. Symbol": "NVDA",
+        "2. Name": "NVIDIA Corporation",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "AVGO": {
+      "Meta Data": {
+        "1. Symbol": "AVGO",
+        "2. Name": "Broadcom Inc.",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "ORCL": {
+      "Meta Data": {
+        "1. Symbol": "ORCL",
+        "2. Name": "Oracle Corporation",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "CSCO": {
+      "Meta Data": {
+        "1. Symbol": "CSCO",
+        "2. Name": "Cisco Systems, Inc.",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "IBM": {
+      "Meta Data": {
+        "1. Symbol": "IBM",
+        "2. Name": "International Business Machines",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "ADBE": {
+      "Meta Data": {
+        "1. Symbol": "ADBE",
+        "2. Name": "Adobe Inc.",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "CRM": {
+      "Meta Data": {
+        "1. Symbol": "CRM",
+        "2. Name": "Salesforce, Inc.",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "INTU": {
+      "Meta Data": {
+        "1. Symbol": "INTU",
+        "2. Name": "Intuit Inc.",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "TXN": {
+      "Meta Data": {
+        "1. Symbol": "TXN",
+        "2. Name": "Texas Instruments Incorporated",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "QCOM": {
+      "Meta Data": {
+        "1. Symbol": "QCOM",
+        "2. Name": "QUALCOMM Incorporated",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "AMAT": {
+      "Meta Data": {
+        "1. Symbol": "AMAT",
+        "2. Name": "Applied Materials, Inc.",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "LRCX": {
+      "Meta Data": {
+        "1. Symbol": "LRCX",
+        "2. Name": "Lam Research Corporation",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "KLAC": {
+      "Meta Data": {
+        "1. Symbol": "KLAC",
+        "2. Name": "KLA Corporation",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "NOW": {
+      "Meta Data": {
+        "1. Symbol": "NOW",
+        "2. Name": "ServiceNow, Inc.",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "ACN": {
+      "Meta Data": {
+        "1. Symbol": "ACN",
+        "2. Name": "Accenture plc",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "AMD": {
+      "Meta Data": {
+        "1. Symbol": "AMD",
+        "2. Name": "Advanced Micro Devices, Inc.",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "MU": {
+      "Meta Data": {
+        "1. Symbol": "MU",
+        "2. Name": "Micron Technology, Inc.",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "INTC": {
+      "Meta Data": {
+        "1. Symbol": "INTC",
+        "2. Name": "Intel Corporation",
+        "3. Sector": "Technology"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "VZ": {
+      "Meta Data": {
+        "1. Symbol": "VZ",
+        "2. Name": "Verizon Communications Inc.",
+        "3. Sector": "Communication Services"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "T": {
+      "Meta Data": {
+        "1. Symbol": "T",
+        "2. Name": "AT&T Inc.",
+        "3. Sector": "Communication Services"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "TMUS": {
+      "Meta Data": {
+        "1. Symbol": "TMUS",
+        "2. Name": "T-Mobile US, Inc.",
+        "3. Sector": "Communication Services"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "CMCSA": {
+      "Meta Data": {
+        "1. Symbol": "CMCSA",
+        "2. Name": "Comcast Corporation",
+        "3. Sector": "Communication Services"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "NFLX": {
+      "Meta Data": {
+        "1. Symbol": "NFLX",
+        "2. Name": "Netflix, Inc.",
+        "3. Sector": "Communication Services"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "AMZN": {
+      "Meta Data": {
+        "1. Symbol": "AMZN",
+        "2. Name": "Amazon.com, Inc.",
+        "3. Sector": "Consumer Discretionary"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "HD": {
+      "Meta Data": {
+        "1. Symbol": "HD",
+        "2. Name": "The Home Depot, Inc.",
+        "3. Sector": "Consumer Discretionary"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "LOW": {
+      "Meta Data": {
+        "1. Symbol": "LOW",
+        "2. Name": "Lowe's Companies, Inc.",
+        "3. Sector": "Consumer Discretionary"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "MCD": {
+      "Meta Data": {
+        "1. Symbol": "MCD",
+        "2. Name": "McDonald's Corporation",
+        "3. Sector": "Consumer Discretionary"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "NKE": {
+      "Meta Data": {
+        "1. Symbol": "NKE",
+        "2. Name": "NIKE, Inc.",
+        "3. Sector": "Consumer Discretionary"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "SBUX": {
+      "Meta Data": {
+        "1. Symbol": "SBUX",
+        "2. Name": "Starbucks Corporation",
+        "3. Sector": "Consumer Discretionary"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "BKNG": {
+      "Meta Data": {
+        "1. Symbol": "BKNG",
+        "2. Name": "Booking Holdings Inc.",
+        "3. Sector": "Consumer Discretionary"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "TJX": {
+      "Meta Data": {
+        "1. Symbol": "TJX",
+        "2. Name": "The TJX Companies, Inc.",
+        "3. Sector": "Consumer Discretionary"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "ROST": {
+      "Meta Data": {
+        "1. Symbol": "ROST",
+        "2. Name": "Ross Stores, Inc.",
+        "3. Sector": "Consumer Discretionary"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "TGT": {
+      "Meta Data": {
+        "1. Symbol": "TGT",
+        "2. Name": "Target Corporation",
+        "3. Sector": "Consumer Discretionary"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "PG": {
+      "Meta Data": {
+        "1. Symbol": "PG",
+        "2. Name": "The Procter & Gamble Company",
+        "3. Sector": "Consumer Staples"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "KO": {
+      "Meta Data": {
+        "1. Symbol": "KO",
+        "2. Name": "The Coca-Cola Company",
+        "3. Sector": "Consumer Staples"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "PEP": {
+      "Meta Data": {
+        "1. Symbol": "PEP",
+        "2. Name": "PepsiCo, Inc.",
+        "3. Sector": "Consumer Staples"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "WMT": {
+      "Meta Data": {
+        "1. Symbol": "WMT",
+        "2. Name": "Walmart Inc.",
+        "3. Sector": "Consumer Staples"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "COST": {
+      "Meta Data": {
+        "1. Symbol": "COST",
+        "2. Name": "Costco Wholesale Corporation",
+        "3. Sector": "Consumer Staples"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "MDLZ": {
+      "Meta Data": {
+        "1. Symbol": "MDLZ",
+        "2. Name": "Mondelez International, Inc.",
+        "3. Sector": "Consumer Staples"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "CL": {
+      "Meta Data": {
+        "1. Symbol": "CL",
+        "2. Name": "Colgate-Palmolive Company",
+        "3. Sector": "Consumer Staples"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "KMB": {
+      "Meta Data": {
+        "1. Symbol": "KMB",
+        "2. Name": "Kimberly-Clark Corporation",
+        "3. Sector": "Consumer Staples"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "PM": {
+      "Meta Data": {
+        "1. Symbol": "PM",
+        "2. Name": "Philip Morris International Inc.",
+        "3. Sector": "Consumer Staples"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "MO": {
+      "Meta Data": {
+        "1. Symbol": "MO",
+        "2. Name": "Altria Group, Inc.",
+        "3. Sector": "Consumer Staples"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "KR": {
+      "Meta Data": {
+        "1. Symbol": "KR",
+        "2. Name": "The Kroger Co.",
+        "3. Sector": "Consumer Staples"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "SYY": {
+      "Meta Data": {
+        "1. Symbol": "SYY",
+        "2. Name": "Sysco Corporation",
+        "3. Sector": "Consumer Staples"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "JNJ": {
+      "Meta Data": {
+        "1. Symbol": "JNJ",
+        "2. Name": "Johnson & Johnson",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "UNH": {
+      "Meta Data": {
+        "1. Symbol": "UNH",
+        "2. Name": "UnitedHealth Group Incorporated",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "MRK": {
+      "Meta Data": {
+        "1. Symbol": "MRK",
+        "2. Name": "Merck & Co., Inc.",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "ABBV": {
+      "Meta Data": {
+        "1. Symbol": "ABBV",
+        "2. Name": "AbbVie Inc.",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "LLY": {
+      "Meta Data": {
+        "1. Symbol": "LLY",
+        "2. Name": "Eli Lilly and Company",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "AMGN": {
+      "Meta Data": {
+        "1. Symbol": "AMGN",
+        "2. Name": "Amgen Inc.",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "TMO": {
+      "Meta Data": {
+        "1. Symbol": "TMO",
+        "2. Name": "Thermo Fisher Scientific Inc.",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "ABT": {
+      "Meta Data": {
+        "1. Symbol": "ABT",
+        "2. Name": "Abbott Laboratories",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "DHR": {
+      "Meta Data": {
+        "1. Symbol": "DHR",
+        "2. Name": "Danaher Corporation",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "BMY": {
+      "Meta Data": {
+        "1. Symbol": "BMY",
+        "2. Name": "Bristol-Myers Squibb Company",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "PFE": {
+      "Meta Data": {
+        "1. Symbol": "PFE",
+        "2. Name": "Pfizer Inc.",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "GILD": {
+      "Meta Data": {
+        "1. Symbol": "GILD",
+        "2. Name": "Gilead Sciences, Inc.",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "CVS": {
+      "Meta Data": {
+        "1. Symbol": "CVS",
+        "2. Name": "CVS Health Corporation",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "CI": {
+      "Meta Data": {
+        "1. Symbol": "CI",
+        "2. Name": "The Cigna Group",
+        "3. Sector": "Healthcare"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "BRK.B": {
+      "Meta Data": {
+        "1. Symbol": "BRK.B",
+        "2. Name": "Berkshire Hathaway Inc. (Class B)",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "JPM": {
+      "Meta Data": {
+        "1. Symbol": "JPM",
+        "2. Name": "JPMorgan Chase & Co.",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "BAC": {
+      "Meta Data": {
+        "1. Symbol": "BAC",
+        "2. Name": "Bank of America Corporation",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "WFC": {
+      "Meta Data": {
+        "1. Symbol": "WFC",
+        "2. Name": "Wells Fargo & Company",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "C": {
+      "Meta Data": {
+        "1. Symbol": "C",
+        "2. Name": "Citigroup Inc.",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "GS": {
+      "Meta Data": {
+        "1. Symbol": "GS",
+        "2. Name": "The Goldman Sachs Group, Inc.",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "MS": {
+      "Meta Data": {
+        "1. Symbol": "MS",
+        "2. Name": "Morgan Stanley",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "V": {
+      "Meta Data": {
+        "1. Symbol": "V",
+        "2. Name": "Visa Inc.",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "MA": {
+      "Meta Data": {
+        "1. Symbol": "MA",
+        "2. Name": "Mastercard Incorporated",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "AXP": {
+      "Meta Data": {
+        "1. Symbol": "AXP",
+        "2. Name": "American Express Company",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "BLK": {
+      "Meta Data": {
+        "1. Symbol": "BLK",
+        "2. Name": "BlackRock, Inc.",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "SCHW": {
+      "Meta Data": {
+        "1. Symbol": "SCHW",
+        "2. Name": "The Charles Schwab Corporation",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "CME": {
+      "Meta Data": {
+        "1. Symbol": "CME",
+        "2. Name": "CME Group Inc.",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "SPGI": {
+      "Meta Data": {
+        "1. Symbol": "SPGI",
+        "2. Name": "S&P Global Inc.",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "MCO": {
+      "Meta Data": {
+        "1. Symbol": "MCO",
+        "2. Name": "Moody's Corporation",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "PGR": {
+      "Meta Data": {
+        "1. Symbol": "PGR",
+        "2. Name": "The Progressive Corporation",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "CB": {
+      "Meta Data": {
+        "1. Symbol": "CB",
+        "2. Name": "Chubb Limited",
+        "3. Sector": "Financials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "CAT": {
+      "Meta Data": {
+        "1. Symbol": "CAT",
+        "2. Name": "Caterpillar Inc.",
+        "3. Sector": "Industrials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "DE": {
+      "Meta Data": {
+        "1. Symbol": "DE",
+        "2. Name": "Deere & Company",
+        "3. Sector": "Industrials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "UNP": {
+      "Meta Data": {
+        "1. Symbol": "UNP",
+        "2. Name": "Union Pacific Corporation",
+        "3. Sector": "Industrials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "HON": {
+      "Meta Data": {
+        "1. Symbol": "HON",
+        "2. Name": "Honeywell International Inc.",
+        "3. Sector": "Industrials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "GE": {
+      "Meta Data": {
+        "1. Symbol": "GE",
+        "2. Name": "GE Aerospace",
+        "3. Sector": "Industrials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "LMT": {
+      "Meta Data": {
+        "1. Symbol": "LMT",
+        "2. Name": "Lockheed Martin Corporation",
+        "3. Sector": "Industrials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "RTX": {
+      "Meta Data": {
+        "1. Symbol": "RTX",
+        "2. Name": "RTX Corporation",
+        "3. Sector": "Industrials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "GD": {
+      "Meta Data": {
+        "1. Symbol": "GD",
+        "2. Name": "General Dynamics Corporation",
+        "3. Sector": "Industrials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "NOC": {
+      "Meta Data": {
+        "1. Symbol": "NOC",
+        "2. Name": "Northrop Grumman Corporation",
+        "3. Sector": "Industrials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "UPS": {
+      "Meta Data": {
+        "1. Symbol": "UPS",
+        "2. Name": "United Parcel Service, Inc.",
+        "3. Sector": "Industrials"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "XOM": {
+      "Meta Data": {
+        "1. Symbol": "XOM",
+        "2. Name": "Exxon Mobil Corporation",
+        "3. Sector": "Energy"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "CVX": {
+      "Meta Data": {
+        "1. Symbol": "CVX",
+        "2. Name": "Chevron Corporation",
+        "3. Sector": "Energy"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "COP": {
+      "Meta Data": {
+        "1. Symbol": "COP",
+        "2. Name": "ConocoPhillips",
+        "3. Sector": "Energy"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "EOG": {
+      "Meta Data": {
+        "1. Symbol": "EOG",
+        "2. Name": "EOG Resources, Inc.",
+        "3. Sector": "Energy"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "NEE": {
+      "Meta Data": {
+        "1. Symbol": "NEE",
+        "2. Name": "NextEra Energy, Inc.",
+        "3. Sector": "Utilities"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "DUK": {
+      "Meta Data": {
+        "1. Symbol": "DUK",
+        "2. Name": "Duke Energy Corporation",
+        "3. Sector": "Utilities"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "SO": {
+      "Meta Data": {
+        "1. Symbol": "SO",
+        "2. Name": "The Southern Company",
+        "3. Sector": "Utilities"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "AEP": {
+      "Meta Data": {
+        "1. Symbol": "AEP",
+        "2. Name": "American Electric Power Company, Inc.",
+        "3. Sector": "Utilities"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "PLD": {
+      "Meta Data": {
+        "1. Symbol": "PLD",
+        "2. Name": "Prologis, Inc.",
+        "3. Sector": "Real Estate"
+      },
+      "Time Series (Weekly)": {}
+    },
+    "AMT": {
+      "Meta Data": {
+        "1. Symbol": "AMT",
+        "2. Name": "American Tower Corporation",
+        "3. Sector": "Real Estate"
+      },
+      "Time Series (Weekly)": {}
+    }
+  }
+}
