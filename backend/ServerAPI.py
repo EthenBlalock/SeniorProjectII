@@ -3,12 +3,12 @@
 import datetime
 import flask
 import typing
-import uuid
 
 import CustomMethodsVI.Connection as Connection
 import CustomMethodsVI.Stream as Stream
 
 import Database
+import Finance
 
 
 def get_json_key(json: dict[str, ...], key: str, *types: type, can_be_none: bool = False, acceptor: typing.Callable[[typing.Any], bool] = None, default: typing.Optional[typing.Any] = None) -> typing.Any:
@@ -43,10 +43,23 @@ def handle_implicit_api(server: flask.Flask) -> None:
 		return NotImplemented
 
 	@api.endpoint('/companies')
-	def on_companies(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> list:
+	def on_companies(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> list[dict[str, str | float]]:
 		page: int = get_json_key(json, 'page', int, default=0)
 		page_size: int = 10
 		return Stream.LinqStream(companies.items()).skip(page * page_size).take(page_size).sort().transform(lambda pair: {'symbol': pair[0], 'name': pair[1]['Meta Data']['2. Name'], 'price': -1}).collect(list)
+
+	@api.endpoint('/company-current')
+	def on_company(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> dict[str, typing.Any]:
+		company_code: str = get_json_key(json, 'company', str, can_be_none=False, acceptor=lambda value: len(value) > 0)
+		company: Finance.CompanyInfo = Finance.CompanyInfo(company_code)
+		return company.frame().to_dict()
+
+	@api.endpoint('/company-history')
+	def on_company(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> list[dict[str, typing.Any]]:
+		company_code: str = get_json_key(json, 'company', str, can_be_none=False, acceptor=lambda value: len(value) > 0)
+		period: Finance.FramePeriod = Finance.FramePeriod[get_json_key(json, 'period', str, can_be_none=False)]
+		company: Finance.CompanyInfo = Finance.CompanyInfo(company_code)
+		return list(frame.to_dict() for frame in company.frames(period))
 
 	@api.endpoint('/stock')
 	def on_stock(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> dict:
@@ -84,7 +97,6 @@ def handle_user_api(server: flask.Flask) -> None:
 	"""
 
 	api: Connection.FlaskServerAPI = Connection.FlaskServerAPI(server, '/users', requires_auth=True)
-	users: dict[uuid.UUID, Database.MyDatabase] = {}
 
 	@api.connector
 	def on_connect(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> int:
@@ -99,9 +111,9 @@ def handle_user_api(server: flask.Flask) -> None:
 
 			try:
 				user: Database.MyDatabase = Database.MyDatabase.create(f'users.{username}', crypt=password)
-				users[session.token] = user
 				user['email'] = email
 				user.save_async().then(lambda p: print(f'New user created: \'{username}\''))
+				session.data['user'] = user
 				result = {'error': None, 'user': user.stream().to_dictionary()}
 			except FileExistsError:
 				result = {'error': 'UserExists'}
@@ -114,11 +126,8 @@ def handle_user_api(server: flask.Flask) -> None:
 
 			try:
 				user: Database.MyDatabase = Database.MyDatabase.open(f'users.{username}', create_if_not_found=False, crypt=password)
-				users[session.token] = user
+				session.data['user'] = user
 				result = {'error': None, 'user': user.stream().to_dictionary()}
-
-				for k, v in user:
-					print(k, v)
 			except FileNotFoundError:
 				result = {'error': 'NoSuchUser'}
 			except PermissionError:
@@ -128,7 +137,7 @@ def handle_user_api(server: flask.Flask) -> None:
 
 	@api.disconnector
 	def on_disconnect(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> None:
-		user: Database.MyDatabase = users.pop(session.token, None)
+		user: typing.Optional[Database.MyDatabase] = session.data.get('user')
 
 		if user is not None and not user.closed:
 			user.save()
