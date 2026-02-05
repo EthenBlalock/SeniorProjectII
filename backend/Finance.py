@@ -21,6 +21,19 @@ class FramePeriod(enum.StrEnum):
 	ALL = 'max'
 
 
+class FrameInterval(enum.StrEnum):
+	MINUTES_1 = '1m'
+	MINUTES_5 = '5m'
+	QUARTER_HOUR = '15m'
+	HALF_HOUR = '30m'
+	HOUR = '60m'
+	DAY = '1d'
+	WEEK = '5d'
+	FULL_WEEK = '1wk'
+	MONTH = '1mo'
+	QUARTER = '3mo'
+
+
 class StockPriceFrame:
 	"""
 	Class holding a single company's stock price for a given timestamp
@@ -162,15 +175,16 @@ class CompanyInfo:
 		price_low: float = data.get('dayLow')
 		return StockPriceFrame(self, pandas.Timestamp.now(), price_open, -1, price_high, price_low, price_current)
 
-	def frames(self, period: FramePeriod = FramePeriod.ALL) -> typing.Generator[StockPriceFrame]:
+	def frames(self, period: FramePeriod = FramePeriod.ALL, interval: FrameInterval = FrameInterval.DAY) -> typing.Generator[StockPriceFrame]:
 		"""
 		* This function is a generator *\n
 		Gets the previous company stock information from Yahoo
 		:param period: The amount of time to retrieve from database
+		:param interval: The time interval between points
 		:return: A StockPrice generator
 		"""
 
-		frame: pandas.DataFrame = self.__ticker__.history(period=period.value)
+		frame: pandas.DataFrame = self.__ticker__.history(period=period.value, interval=interval.value)
 		keys: tuple[str, ...] = tuple(frame)
 		open_index: int = keys.index('Open') + 1
 		close_index: int = keys.index('Close') + 1

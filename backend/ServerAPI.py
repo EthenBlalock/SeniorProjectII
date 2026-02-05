@@ -58,8 +58,9 @@ def handle_implicit_api(server: flask.Flask) -> None:
 	def on_company(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> list[dict[str, typing.Any]]:
 		company_code: str = get_json_key(json, 'company', str, can_be_none=False, acceptor=lambda value: len(value) > 0)
 		period: Finance.FramePeriod = Finance.FramePeriod[get_json_key(json, 'period', str, can_be_none=False)]
+		interval: Finance.FrameInterval = Finance.FrameInterval[get_json_key(json, 'interval', str, can_be_none=False, default='DAY')]
 		company: Finance.CompanyInfo = Finance.CompanyInfo(company_code)
-		return list(frame.to_dict() for frame in company.frames(period))
+		return list(frame.to_dict() for frame in company.frames(period, interval))
 
 	@api.endpoint('/stock')
 	def on_stock(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> dict:
@@ -89,63 +90,6 @@ def handle_explicit_api(server: flask.Flask) -> None:
 		}
 
 
-def handle_user_api(server: flask.Flask) -> None:
-	"""
-	Handles internal server API communication\n
-	API communication with front-end
-	:param server: The flask server instance
-	"""
-
-	api: Connection.FlaskServerAPI = Connection.FlaskServerAPI(server, '/users', requires_auth=True)
-
-	@api.connector
-	def on_connect(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> int:
-		print(f'User-API Connect: {session.token} @ {session.ip}')
-		is_signup: str = get_json_key(json, 'is-sign-up', bool)
-
-		if is_signup:
-			username: str = get_json_key(json, 'username', str)
-			email: str = get_json_key(json, 'email', str)
-			password: str = get_json_key(json, 'password', str).rjust(16, ' ')
-			result: dict | int = 500
-
-			try:
-				user: Database.MyDatabase = Database.MyDatabase.create(f'users.{username}', crypt=password)
-				user['email'] = email
-				user.save_async().then(lambda p: print(f'New user created: \'{username}\''))
-				session.data['user'] = user
-				result = {'error': None, 'user': user.stream().to_dictionary()}
-			except FileExistsError:
-				result = {'error': 'UserExists'}
-			finally:
-				return result
-		else:
-			username: str = get_json_key(json, 'username', str)
-			password: str = get_json_key(json, 'password', str).rjust(16, ' ')
-			result: dict | int = 500
-
-			try:
-				user: Database.MyDatabase = Database.MyDatabase.open(f'users.{username}', create_if_not_found=False, crypt=password)
-				session.data['user'] = user
-				result = {'error': None, 'user': user.stream().to_dictionary()}
-			except FileNotFoundError:
-				result = {'error': 'NoSuchUser'}
-			except PermissionError:
-				result = {'error': 'InvalidPassword'}
-			finally:
-				return result
-
-	@api.disconnector
-	def on_disconnect(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> None:
-		user: typing.Optional[Database.MyDatabase] = session.data.get('user')
-
-		if user is not None and not user.closed:
-			user.save()
-			user.close()
-
-		print(f'User-API Disconnect: {session.token}')
-
-
 def init(server: flask.Flask) -> None:
 	"""
 	Initializes all flask server API endpoints
@@ -154,4 +98,3 @@ def init(server: flask.Flask) -> None:
 
 	handle_implicit_api(server)
 	handle_explicit_api(server)
-	handle_user_api(server)
