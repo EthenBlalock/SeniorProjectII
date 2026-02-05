@@ -8,7 +8,9 @@ const NavBar = () => {
       <div className="nav-container">
         <div className="nav-left">
           <Link to="/home" className="nav-logo">
-            <img src={logo} alt="Upscale logo" />
+            <span className="nav-logo-mark">
+            <img src={logo} alt="Upscale logo" /> 
+            </span>
             <span>Upscale</span>
           </Link>
 

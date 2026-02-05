@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from './pages/HomePage';
 import NavBar from './components/NavBar'
 
-
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage'
+import StockPage from './pages/StocksPage';
 
 function App() {
   return (
@@ -19,6 +19,7 @@ function App() {
         <Route path="/home" element= {<HomePage/>} />
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/signup" element={<SignupPage/>}/>
+        <Route path="/stocks" element={<StockPage/>}/>
       </Routes>
       </div>
     </Router>
