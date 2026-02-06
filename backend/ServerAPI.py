@@ -1,10 +1,13 @@
 # Handles server API
 
+import base64
+import cv2
 import datetime
 import flask
 import typing
 
 import CustomMethodsVI.Connection as Connection
+import CustomMethodsVI.Math.Plotter.Plot2D as Plot2D
 import CustomMethodsVI.Stream as Stream
 
 import Database
@@ -49,18 +52,33 @@ def handle_implicit_api(server: flask.Flask) -> None:
 		return Stream.LinqStream(companies.items()).skip(page * page_size).take(page_size).sort().transform(lambda pair: {'symbol': pair[0], 'name': pair[1]['Meta Data']['2. Name'], 'price': -1}).collect(list)
 
 	@api.endpoint('/company-current')
-	def on_company(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> dict[str, typing.Any]:
+	def on_company_current(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> dict[str, typing.Any]:
 		company_code: str = get_json_key(json, 'company', str, can_be_none=False, acceptor=lambda value: len(value) > 0)
 		company: Finance.CompanyInfo = Finance.CompanyInfo(company_code)
 		return company.frame().to_dict()
 
 	@api.endpoint('/company-history')
-	def on_company(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> list[dict[str, typing.Any]]:
+	def on_company_history(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> list[dict[str, typing.Any]]:
 		company_code: str = get_json_key(json, 'company', str, can_be_none=False, acceptor=lambda value: len(value) > 0)
 		period: Finance.FramePeriod = Finance.FramePeriod[get_json_key(json, 'period', str, can_be_none=False)]
 		interval: Finance.FrameInterval = Finance.FrameInterval[get_json_key(json, 'interval', str, can_be_none=False, default='DAY')]
 		company: Finance.CompanyInfo = Finance.CompanyInfo(company_code)
 		return list(frame.to_dict() for frame in company.frames(period, interval))
+
+	@api.endpoint('/company-history-image')
+	def on_company_candlestick(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> dict[str, bytes]:
+		company_code: str = get_json_key(json, 'company', str, can_be_none=False, acceptor=lambda value: len(value) > 0)
+		period: Finance.FramePeriod = Finance.FramePeriod[get_json_key(json, 'period', str, can_be_none=False)]
+		interval: Finance.FrameInterval = Finance.FrameInterval[get_json_key(json, 'interval', str, can_be_none=False, default='DAY')]
+		company: Finance.CompanyInfo = Finance.CompanyInfo(company_code)
+		candlestick: Plot2D.CandlestickPlot2D = Plot2D.CandlestickPlot2D()
+		candlestick.add_points(*[Plot2D.CandlestickPlot2D.CandleFrame(frame.timestamp.to_pydatetime(), frame.open, frame.high, frame.low, frame.close) for frame in company.frames(period, interval)])
+		ret, buffer = cv2.imencode('.jpg', candlestick.as_image(square_size=256))
+
+		if not ret:
+			raise IOError('Failed to encode image')
+		else:
+			return {'image-base64': base64.b64encode(buffer)}
 
 	@api.endpoint('/stock')
 	def on_stock(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> dict:
