@@ -33,6 +33,30 @@ class FrameInterval(enum.StrEnum):
 	MONTH = '1mo'
 	QUARTER = '3mo'
 
+	def seconds(self) -> int:
+		if self == FrameInterval.MINUTES_1:
+			return 60
+		elif self == FrameInterval.MINUTES_5:
+			return 300
+		elif self == FrameInterval.QUARTER_HOUR:
+			return 900
+		elif self == FrameInterval.HALF_HOUR:
+			return 1800
+		elif self == FrameInterval.HOUR:
+			return 3600
+		elif self == FrameInterval.DAY:
+			return 86400
+		elif self == FrameInterval.WEEK:
+			return 432000
+		elif self == FrameInterval.FULL_WEEK:
+			return 604800
+		elif self == FrameInterval.MONTH:
+			return 2635200
+		elif self == FrameInterval.QUARTER:
+			return 7905600
+		else:
+			raise ValueError(f'Unknown enum: \'{self}\'')
+
 
 class StockPriceFrame:
 	"""
@@ -75,7 +99,7 @@ class StockPriceFrame:
 		"""
 
 		return {
-			'TimeStamp': self.timestamp.value,
+			'TimeStamp': self.timestamp.value / 1e9,
 			'OpenPrice': self.open,
 			'ClosePrice': self.close,
 			'MomentHigh': self.high,

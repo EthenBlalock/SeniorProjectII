@@ -4,6 +4,7 @@ import base64
 import cv2
 import datetime
 import flask
+import numpy
 import typing
 
 import CustomMethodsVI.Connection as Connection
@@ -74,7 +75,12 @@ def handle_implicit_api(server: flask.Flask) -> None:
 		company: Finance.CompanyInfo = Finance.CompanyInfo(company_code)
 		candlestick: Plot2D.CandlestickPlot2D = Plot2D.CandlestickPlot2D()
 		candlestick.add_points(*[Plot2D.CandlestickPlot2D.CandleFrame(frame.timestamp.to_pydatetime(), frame.open, frame.high, frame.low, frame.close) for frame in company.frames(period, interval)])
-		ret, buffer = cv2.imencode('.jpg', cv2.cvtColor(candlestick.as_image(square_size=square_size), cv2.COLOR_BGR2RGB))
+		miny, maxy = candlestick.bounds[2:4]
+		candlestick.axes_info('time', minor_spacing=interval.seconds(), center=(0, miny))
+		candlestick.axes_info('price', minor_spacing=(maxy - miny) / 100)
+		rendered: numpy.ndarray = candlestick.as_image(square_size=square_size)
+		rendered = cv2.cvtColor(rendered, cv2.COLOR_BGR2RGB)
+		ret, buffer = cv2.imencode('.jpg', rendered)
 
 		if not ret:
 			raise IOError('Failed to encode image')
