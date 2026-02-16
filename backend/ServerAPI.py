@@ -10,6 +10,7 @@ import requests
 import typing
 
 import CustomMethodsVI.Connection as Connection
+import CustomMethodsVI.Math.Plotter.Plotter as Plotter
 import CustomMethodsVI.Math.Plotter.Plot2D as Plot2D
 import CustomMethodsVI.Stream as Stream
 
@@ -33,6 +34,11 @@ def get_json_key(json: dict[str, ...], key: str, *types: type, can_be_none: bool
 	value: typing.Any = json.get(key, default)
 	assert (isinstance(value, types) or (value is None and can_be_none)) and (not callable(acceptor) or acceptor(value)), 'Invalid JSON value'
 	return value
+
+
+def axis_label(axis: str, point: tuple[float, ...]) -> str:
+	x, y = point
+	return datetime.datetime.fromtimestamp(x).strftime('%m/%d/%Y (%H:%M)') if axis == 'time' else f'${y:,.2f}'
 
 
 def handle_implicit_api(server: flask.Flask) -> None:
@@ -123,16 +129,18 @@ def handle_implicit_api(server: flask.Flask) -> None:
 		:return: A base-64 encoded JPG image
 		"""
 
+		resolution: int = 1024
+		font_scale: float = 0.375
 		company_code: str = get_json_key(json, 'company', str, can_be_none=False, acceptor=lambda value: len(value) > 0)
 		period: Finance.FramePeriod = Finance.FramePeriod[get_json_key(json, 'period', str, can_be_none=False)]
 		interval: Finance.FrameInterval = Finance.FrameInterval[get_json_key(json, 'interval', str, can_be_none=False, default='DAY')]
-		square_size: int = get_json_key(json, 'size', int, can_be_none=False, default=256)
+		square_size: int = get_json_key(json, 'size', int, can_be_none=False, default=resolution)
 		company: Finance.CompanyInfo = Finance.CompanyInfo(company_code)
 		candlestick: Plot2D.CandlestickPlot2D = Plot2D.CandlestickPlot2D()
 		candlestick.add_points(*[Plot2D.CandlestickPlot2D.CandleFrame(frame.timestamp.to_pydatetime(), frame.open, frame.high, frame.low, frame.close) for frame in company.frames(period, interval)])
 		miny, maxy = candlestick.bounds[2:4]
-		candlestick.axes_info('time', minor_spacing=interval.seconds(), center=(0, miny))
-		candlestick.axes_info('price', minor_spacing=(maxy - miny) / 100)
+		candlestick.axes_info('time', minor_spacing=interval.seconds(), major_spacing=10, center=(0, miny), label=Plot2D.AxisPlot2D.AxisLabel2D(labeller=axis_label, spacing=Plotter.LabelSpacing.MAJOR, color=0xEEEEEEFF, angle=15, font_scale=font_scale))
+		candlestick.axes_info('price', minor_spacing=(maxy - miny) / 100, major_spacing=5, label=Plot2D.AxisPlot2D.AxisLabel2D(labeller=axis_label, color=0xEEEEEEFF, angle=15, spacing=Plotter.LabelSpacing.MAJOR, font_scale=font_scale))
 		rendered: numpy.ndarray = candlestick.as_image(square_size=square_size)
 		rendered = cv2.cvtColor(rendered, cv2.COLOR_BGR2RGB)
 		ret, buffer = cv2.imencode('.jpg', rendered)
