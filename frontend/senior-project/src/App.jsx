@@ -12,6 +12,7 @@ import BudgetPage from './pages/BudgetPage';
 import NewsPage from './pages/NewsPage';
 import Chatbot from './components/Chatbot';
 import { AuthProvider } from "./hooks/AuthContext";
+import LearningCenter from './pages/LearningcenterPage';
 
 
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/stocks" element={<StockPage/>}/>
         <Route path="/budget" element={<BudgetPage/>}/>
         <Route path="/news" element={<NewsPage/>}/>
+        <Route path="/learningCenter" element={<LearningCenter/>}/>
       </Routes>
       </div>
     </Router>

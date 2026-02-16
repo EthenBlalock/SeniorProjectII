@@ -133,12 +133,11 @@
 
 .bar-column {
   width: 100%;
-  height: 100%;
+  height: 200px; /* Fixed height so percentage calculations work */
   display: flex;
   justify-content: center;
   align-items: flex-end;
   position: relative;
-  min-height: 200px;
 }
 
 .bar-stack {
@@ -153,12 +152,15 @@
 .bar {
   position: relative;
   border-radius: 8px 8px 0 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  min-height: 8px;
+  /* Smooth height animation - bars will grow from 0 to calculated % */
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1), 
+              filter 0.3s ease, 
+              transform 0.3s ease;
   display: flex;
   align-items: flex-start;
   justify-content: center;
   box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
+  /* NO min-height - let the percentage control the actual height */
 }
 
 .bar:hover {

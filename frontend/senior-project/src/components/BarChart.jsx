@@ -12,14 +12,19 @@ const BarChart = ({ data, color = '#22c55e', showRange = false }) => {
       }
       return item.amount || item.value || 0;
     }),
-    1 // Prevent division by zero
+    10 // Baseline of 10 instead of 1 for better small-value scaling
   );
 
-  // Calculate bar height as percentage
+  // Calculate bar height as percentage - FIXED to make bars actually grow tall
   const getBarHeight = (value) => {
-    if (!value || maxValue === 0) return 0;
+    if (!value || value === 0) return 0;
+    if (maxValue === 0) return 0;
+    
+    // Calculate percentage (0-100) of the max value
     const percent = (value / maxValue) * 100;
-    return Math.max(percent, 2); // Minimum 2% visibility
+    
+    // Return percentage - bars will be this % of the container height
+    return percent;
   };
 
   return (
@@ -39,7 +44,7 @@ const BarChart = ({ data, color = '#22c55e', showRange = false }) => {
                   // Range comparison mode
                   <div className="bar-stack">
                     {/* NC Range Bar (background) */}
-                    {rangeMax > 0 && (
+                    {rangeMax > 0 ? (
                       <div 
                         className="bar range-bar"
                         style={{ 
@@ -47,17 +52,19 @@ const BarChart = ({ data, color = '#22c55e', showRange = false }) => {
                         }}
                       >
                         {/* Darker band showing the actual range (min to max) */}
-                        <div 
-                          className="range-band"
-                          style={{
-                            height: rangeBand > 0 ? `${(rangeBand / rangeMax) * 100}%` : '0%'
-                          }}
-                        />
+                        {rangeBand > 0 ? (
+                          <div 
+                            className="range-band"
+                            style={{
+                              height: `${(rangeBand / rangeMax) * 100}%`
+                            }}
+                          />
+                        ) : null}
                       </div>
-                    )}
+                    ) : null}
                     
                     {/* User's actual spending */}
-                    {userValue > 0 && (
+                    {userValue > 0 ? (
                       <div 
                         className="bar user-bar"
                         style={{ 
@@ -67,21 +74,23 @@ const BarChart = ({ data, color = '#22c55e', showRange = false }) => {
                       >
                         <div className="bar-value">${userValue}</div>
                       </div>
-                    )}
+                    ) : null}
                   </div>
                 ) : (
                   // Simple bar mode
-                  itemValue > 0 && (
-                    <div 
-                      className="bar simple-bar"
-                      style={{ 
-                        height: `${getBarHeight(itemValue)}%`,
-                        backgroundColor: color
-                      }}
-                    >
-                      <div className="bar-value">${itemValue}</div>
-                    </div>
-                  )
+                  <>
+                    {itemValue > 0 ? (
+                      <div 
+                        className="bar simple-bar"
+                        style={{ 
+                          height: `${getBarHeight(itemValue)}%`,
+                          backgroundColor: color
+                        }}
+                      >
+                        <div className="bar-value">${itemValue}</div>
+                      </div>
+                    ) : null}
+                  </>
                 )}
               </div>
               <div className="bar-label">{item.name}</div>
