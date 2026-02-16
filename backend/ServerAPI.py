@@ -8,15 +8,16 @@ import numpy
 import os
 import requests
 import typing
+import uuid
 
 import CustomMethodsVI.Connection as Connection
 import CustomMethodsVI.Math.Plotter.Plotter as Plotter
 import CustomMethodsVI.Math.Plotter.Plot2D as Plot2D
 import CustomMethodsVI.Stream as Stream
 
+import Chatbot
 import Database
 import Finance
-from Chatbot import ChatBot
 
 
 def get_json_key(json: dict[str, ...], key: str, *types: type, can_be_none: bool = False, acceptor: typing.Callable[[typing.Any], bool] = None, default: typing.Optional[typing.Any] = None) -> typing.Any:
@@ -38,6 +39,13 @@ def get_json_key(json: dict[str, ...], key: str, *types: type, can_be_none: bool
 
 
 def axis_label(axis: str, point: tuple[float, ...]) -> str:
+	"""
+	Labels the axes of candlestick charts
+	:param axis: The axis name
+	:param point: The axis data point
+	:return: The label string
+	"""
+
 	x, y = point
 	return datetime.datetime.fromtimestamp(x).strftime('%m/%d/%Y (%H:%M)') if axis == 'time' else f'${y:,.2f}'
 
@@ -52,6 +60,7 @@ def handle_implicit_api(server: flask.Flask) -> None:
 	api: Connection.FlaskServerAPI = Connection.FlaskServerAPI(server, '/react', requires_auth=True)
 	company_data: Database.MyDatabase = Database.MyDatabase.open('companies', create_if_not_found=False)
 	companies: dict[str, typing.Any] = company_data['Stocks'].wait()
+	chat_bots: dict[uuid.UUID, Chatbot.ChatBot] = {}
 	company_data.close()
 
 	@api.connector
@@ -174,29 +183,16 @@ def handle_implicit_api(server: flask.Flask) -> None:
 			return 503
 
 		return content['articles']
-	
-	_CHATBOTS: dict[str, ChatBot] = {}
-	
 
-	def _get_session_key(session) -> str:
-		for attr in ("id", "session_id", "client_id", "user_id"):
-			if hasattr(session, attr):
-				value = getattr(session, attr)
-				if value is not None:
-					return str(value)
-				
-		return str(id(session))
-	
 	@api.endpoint("/chatbot")
-	def on_news(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> int | dict:
+	def on_chatbot(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> int | dict:
 		user_input: str = get_json_key(json, "user_input", str)
+		session_key: uuid.UUID = session.token
+		bot: Chatbot.ChatBot = chat_bots.get(session_key)
 
-		session_key = _get_session_key(session)
-
-		bot = _CHATBOTS.get(session_key)
 		if bot is None:
-			bot = ChatBot()
-			_CHATBOTS[session_key] = bot
+			bot = Chatbot.ChatBot()
+			chat_bots[session_key] = bot
 
 		reply = bot.get_response(user_input)
 
