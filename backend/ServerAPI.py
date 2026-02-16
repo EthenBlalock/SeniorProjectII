@@ -16,6 +16,7 @@ import CustomMethodsVI.Stream as Stream
 
 import Database
 import Finance
+from Chatbot import ChatBot
 
 
 def get_json_key(json: dict[str, ...], key: str, *types: type, can_be_none: bool = False, acceptor: typing.Callable[[typing.Any], bool] = None, default: typing.Optional[typing.Any] = None) -> typing.Any:
@@ -161,7 +162,7 @@ def handle_implicit_api(server: flask.Flask) -> None:
 		"""
 
 		is_everything: bool = get_json_key(json, 'is-everything', bool, can_be_none=False, default=False)
-		url: str = f'https://newsapi.org/v2/{'everything?domains=wsj.com' if is_everything else 'top-headlines?country=us'}&apiKey={os.getenv('newsapikey')}'
+		url: str = f'https://newsapi.org/v2/{'everything?domains=wsj.com' if is_everything else 'everything?q=invest'}&apiKey={os.getenv('newsapikey')}'
 		response: requests.Response = requests.get(url)
 
 		if not response.ok:
@@ -173,6 +174,36 @@ def handle_implicit_api(server: flask.Flask) -> None:
 			return 503
 
 		return content['articles']
+	
+	_CHATBOTS: dict[str, ChatBot] = {}
+	
+
+	def _get_session_key(session) -> str:
+		for attr in ("id", "session_id", "client_id", "user_id"):
+			if hasattr(session, attr):
+				value = getattr(session, attr)
+				if value is not None:
+					return str(value)
+				
+		return str(id(session))
+	
+	@api.endpoint("/chatbot")
+	def on_news(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> int | dict:
+		user_input: str = get_json_key(json, "user_input", str)
+
+		session_key = _get_session_key(session)
+
+		bot = _CHATBOTS.get(session_key)
+		if bot is None:
+			bot = ChatBot()
+			_CHATBOTS[session_key] = bot
+
+		reply = bot.get_response(user_input)
+
+		return {
+			"reply": reply,
+			"session_key": session_key,  # optional: helpful for debugging
+		}
 
 
 def handle_explicit_api(server: flask.Flask) -> None:

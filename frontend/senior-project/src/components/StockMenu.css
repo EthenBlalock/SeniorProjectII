@@ -1,95 +1,282 @@
-.div-container {
-  width: 520px;
-  padding: 18px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.03);
+.stock-card {
+  width: 100%;
+  max-width: 560px;
+  padding: 22px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.30);
-  transition: transform 0.15s ease, border-color 0.15s ease;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
-.div-container:hover {
+.stock-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(34, 197, 94, 0.5) 50%, 
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.stock-card:hover::before {
+  opacity: 1;
+}
+
+.stock-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.stock-card:active {
   transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.20);
 }
 
-/* top row */
+/* Top Section */
 .card-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 14px;
+  margin-bottom: 18px;
 }
 
 .card-left {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   align-items: center;
+  flex: 1;
 }
 
-/* bubble */
+/* Company Initial Bubble */
 .company-initial {
-  width: 44px;
-  height: 44px;
-  border-radius: 999px;
-  background: #f2e9d9;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
 
 .company-initial p {
   margin: 0;
-  color: #111;
+  color: #ffffff;
   font-weight: 800;
+  font-size: 20px;
+  letter-spacing: 0.5px;
 }
 
-/* text hierarchy */
-.company-name-symbol .symbol {
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.4px;
+/* Company Info */
+.company-info {
+  flex: 1;
+  min-width: 0;
 }
 
-.company-name-symbol .name {
-  margin-top: 2px;
+.company-info .symbol {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  margin-bottom: 2px;
+}
+
+.company-info .name {
   font-size: 13px;
-  opacity: 0.78;
-  max-width: 280px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
+  margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.company-name-symbol .exchange {
-  margin-top: 3px;
+.company-info .exchange {
   font-size: 11px;
-  opacity: 0.55;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
 }
 
-/* price top-right */
+/* Price Section */
 .card-right {
   text-align: right;
+  flex-shrink: 0;
 }
 
-.card-right .price {
-  font-size: 15px;
+.price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.price {
+  font-size: 20px;
   font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.5px;
 }
 
-/* chart panel */
-.stock-graph {
-  height: 240px;
-  background: #fff;
+/* Chart Container */
+.stock-graph-container {
+  width: 100%;
+  height: 260px;
   border-radius: 12px;
   overflow: hidden;
-  padding: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.stock-graph img {
+/* Fixed Image Rendering */
+.stock-graph-img {
   width: 100%;
   height: 100%;
   display: block;
+  object-fit: contain; /* Changed from cover to contain to show full chart */
+  background: rgba(10, 15, 20, 0.8);
+}
+
+/* Loading State */
+.chart-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: rgba(34, 197, 94, 0.8);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.chart-loading p {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Error State */
+.chart-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.error-icon {
+  font-size: 32px;
+  opacity: 0.6;
+}
+
+.chart-error p {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* Card Footer Actions */
+.card-footer {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 12px 16px;
   border-radius: 10px;
-  object-fit: cover;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  color: white;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.3);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+}
+
+.action-btn:active {
+  transform: translateY(0);
+}
+
+.action-btn.secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: none;
+}
+
+.action-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .stock-card {
+    padding: 18px;
+  }
+
+  .company-initial {
+    width: 44px;
+    height: 44px;
+  }
+
+  .company-initial p {
+    font-size: 18px;
+  }
+
+  .company-info .symbol {
+    font-size: 15px;
+  }
+
+  .price {
+    font-size: 18px;
+  }
+
+  .stock-graph-container {
+    height: 220px;
+  }
+
+  .card-footer {
+    flex-direction: column;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
 }
