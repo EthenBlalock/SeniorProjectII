@@ -140,7 +140,8 @@ def handle_implicit_api(server: flask.Flask) -> None:
 		"""
 
 		resolution: int = 1024
-		font_scale: float = 0.375
+		font_scale: float = 1
+		font_thickness: int = 2
 		company_code: str = get_json_key(json, 'company', str, can_be_none=False, acceptor=lambda value: len(value) > 0)
 		period: Finance.FramePeriod = Finance.FramePeriod[get_json_key(json, 'period', str, can_be_none=False)]
 		interval: Finance.FrameInterval = Finance.FrameInterval[get_json_key(json, 'interval', str, can_be_none=False, default='DAY')]
@@ -149,8 +150,8 @@ def handle_implicit_api(server: flask.Flask) -> None:
 		candlestick: Plot2D.CandlestickPlot2D = Plot2D.CandlestickPlot2D()
 		candlestick.add_points(*[Plot2D.CandlestickPlot2D.CandleFrame(frame.timestamp.to_pydatetime(), frame.open, frame.high, frame.low, frame.close) for frame in company.frames(period, interval)])
 		miny, maxy = candlestick.bounds[2:4]
-		candlestick.axes_info('time', minor_spacing=interval.seconds(), major_spacing=10, center=(0, miny), label=Plot2D.AxisPlot2D.AxisLabel2D(labeller=axis_label, spacing=Plotter.LabelSpacing.MAJOR, color=0xEEEEEEFF, angle=15, font_scale=font_scale))
-		candlestick.axes_info('price', minor_spacing=(maxy - miny) / 100, major_spacing=5, label=Plot2D.AxisPlot2D.AxisLabel2D(labeller=axis_label, color=0xEEEEEEFF, angle=15, spacing=Plotter.LabelSpacing.MAJOR, font_scale=font_scale))
+		candlestick.axes_info('time', minor_spacing=interval.seconds(), major_spacing=10, center=(0, miny), label=Plot2D.AxisPlot2D.AxisLabel2D(labeller=axis_label, spacing=Plotter.LabelSpacing.MAJOR, color=0xEEEEEEFF, angle=15, font_scale=font_scale, font_thickness=font_thickness))
+		candlestick.axes_info('price', minor_spacing=(maxy - miny) / 100, major_spacing=5)#, label=Plot2D.AxisPlot2D.AxisLabel2D(labeller=axis_label, color=0xEEEEEEFF, angle=15, spacing=Plotter.LabelSpacing.MAJOR, font_scale=font_scale, font_thickness=font_thickness))
 		rendered: numpy.ndarray = candlestick.as_image(square_size=square_size)
 		rendered = cv2.cvtColor(rendered, cv2.COLOR_BGR2RGB)
 		ret, buffer = cv2.imencode('.jpg', rendered)

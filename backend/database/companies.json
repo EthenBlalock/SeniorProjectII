@@ -510,14 +510,6 @@
       },
       "Time Series (Weekly)": {}
     },
-    "BRK.B": {
-      "Meta Data": {
-        "1. Symbol": "BRK.B",
-        "2. Name": "Berkshire Hathaway Inc. (Class B)",
-        "3. Sector": "Financials"
-      },
-      "Time Series (Weekly)": {}
-    },
     "JPM": {
       "Meta Data": {
         "1. Symbol": "JPM",
