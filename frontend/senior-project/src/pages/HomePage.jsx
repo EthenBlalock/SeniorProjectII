@@ -201,7 +201,7 @@ const HomePage = () => {
               </div>
             </div>
 
-            <button className="btn-primary" onClick={() => navigate('/stocks')}>
+            <button className="btn-primary" onClick={() => navigate('/papertrade')}>
               Start Paper Trading
               <span className="btn-arrow">→</span>
             </button>
@@ -324,7 +324,7 @@ const HomePage = () => {
               </div>
             </div>
 
-            <button className="btn-primary">
+            <button className="btn-primary" onClick={() => navigate('/career')}>
               Explore Career Data
               <span className="btn-arrow">→</span>
             </button>

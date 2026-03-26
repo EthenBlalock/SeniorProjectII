@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import "./Chatbot.css";
 import ChatForm from "./ChatForm";
 import { useAuth } from "../hooks/AuthContext";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 
 const ChatbotIcon = () => {
@@ -17,8 +19,25 @@ const Chatbot = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const chatBodyRef = useRef(null);
-    const { auth, loadingAuth } = useAuth();
+    const { auth, currentUser, loadingUser } = useAuth();
 
+    async function getFirstName() {
+        const userId = currentUser?.uid;
+        if (!userId) return null;
+        try {
+            const docRef = doc(db, "users", userId);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+                return docSnap.data().firstName ?? null;
+            } else {
+                console.log("No such document for user", userId);
+                return null;
+            }
+        } catch (err) {
+            console.error("getFirstName error:", err);
+            return null;
+        }
+    }
 
     // Scroll to bottom when new messages arrive
     useEffect(() => {
@@ -29,13 +48,23 @@ const Chatbot = () => {
 
     // Send initial greeting
     useEffect(() => {
-        const initialMessage = {
-            type: 'bot',
-            text: 'Hello! I\'m your UpScale financial assistant. How can I help you today?',
-            timestamp: new Date()
-        };
-        setMessages([initialMessage]);
-    }, []);
+        let mounted = true;
+
+        async function initGreeting() {
+            const firstName = (await getFirstName()) || "there";
+            if (!mounted) return;
+            const initialMessage = {
+                type: 'bot',
+                text: `Hello ${firstName}! I'm your UpScale financial assistant. How can I help you today?`,
+                timestamp: new Date()
+            };
+            setMessages([initialMessage]);
+        }
+
+        if (!loadingUser) initGreeting();
+
+        return () => { mounted = false; };
+    }, [currentUser, loadingUser]);
 
     async function getChatBotResponse(auth, userInput) {
         try {

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import StockMenu from "../components/StockMenu";
+import StockDetailPanel from "../components/StockDetailPanel";
 import "./StockPage.css"
 import { useAuth } from "../hooks/AuthContext";
 
@@ -7,9 +8,10 @@ const StockPage = () => {
   const [companies, setCompanies] = useState([]); 
   const [page, setPage] = useState(0);
   const [currentPrices, setCurrentPrices] = useState({});
+  const [selectedCompany, setSelectedCompany] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const { auth, loadingAuth } = useAuth();
+  const { auth } = useAuth();
 
   async function postCompanies(auth, nextPage) {
     setLoading(true);
@@ -141,6 +143,7 @@ const StockPage = () => {
             <StockMenu 
               key={c.symbol} 
               company={{ ...c, price: currentPrices[c.symbol] ?? c.price }} 
+              onViewDetails={(company) => setSelectedCompany(company)}
             />
           ))}
         </div>
@@ -153,6 +156,12 @@ const StockPage = () => {
           <p>Try a different page or refresh</p>
         </div>
       )}
+
+      <StockDetailPanel
+        company={selectedCompany}
+        isOpen={Boolean(selectedCompany)}
+        onClose={() => setSelectedCompany(null)}
+      />
     </div>
   );
 };

@@ -1,9 +1,6 @@
-import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from './pages/HomePage';
 import NavBar from './components/NavBar'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage'
@@ -13,6 +10,9 @@ import NewsPage from './pages/NewsPage';
 import Chatbot from './components/Chatbot';
 import { AuthProvider } from "./hooks/AuthContext";
 import LearningCenter from './pages/LearningcenterPage';
+import CareerPath from './pages/CareerPath';
+import PaperTradingPage from './pages/PaperTradingPage';
+import PaperTradeOrderPage from './pages/PaperTradeOrderPage';
 
 
 
@@ -32,48 +32,14 @@ function App() {
         <Route path="/budget" element={<BudgetPage/>}/>
         <Route path="/news" element={<NewsPage/>}/>
         <Route path="/learningCenter" element={<LearningCenter/>}/>
+        <Route path="/career" element={<CareerPath/>}/>
+        <Route path="/papertrade" element={<PaperTradingPage/>}/>
+        <Route path="/papertrade/order/:symbol" element={<PaperTradeOrderPage/>}/>
       </Routes>
       </div>
     </Router>
     </AuthProvider>
   );
-
-  // const [count, setCount] = useState(0)
-
-  // const [message, setMessage] = useState("")
-
-  // const fetchMessage = async () => {
-  //   const response = await fetch("/api/hello")
-  //   const data = await response.json()
-  //   setMessage(data.message)
-  // }
-
-  // return (
-  //   <>
-  //     <div>
-  //       <a href="https://vite.dev" target="_blank">
-  //         <img src={viteLogo} className="logo" alt="Vite logo" />
-  //       </a>
-  //       <a href="https://react.dev" target="_blank">
-  //         <img src={reactLogo} className="logo react" alt="React logo" />
-  //       </a>
-  //     </div>
-  //     <h1>Vite + React</h1>
-  //     <div className="card">
-  //       <button onClick={() => setCount((count) => count + 1)}>
-  //         count is {count}
-  //       </button>
-  //       <p>
-  //         Edit <code>src/App.jsx</code> and save to test HMR
-  //       </p>
-  //     </div>
-  //     <p className="read-the-docs">
-  //       Click on the Vite and React logos to learn more
-  //     </p>
-  //     <button onClick={fetchMessage}>Fetch Message</button>
-  //     <p>Message from API: {message}</p>
-  //   </>
-  // )
 }
 
 export default App

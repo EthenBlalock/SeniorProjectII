@@ -1,6 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { GoogleAuthProvider } from "firebase/auth";
 
 // Load Firebase configuration from Vite environment variables.
 // Vite exposes variables that start with VITE_ on import.meta.env.
@@ -26,4 +28,6 @@ if (!import.meta.env.VITE_FIREBASE_API_KEY) {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+export const provider = new GoogleAuthProvider();
+export const db = getFirestore(app);
 export const auth = getAuth(app);

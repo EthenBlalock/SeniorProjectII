@@ -137,7 +137,9 @@
   height: 260px;
   border-radius: 12px;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.2);
+  background:
+    radial-gradient(circle at top left, rgba(34, 197, 94, 0.1), transparent 35%),
+    linear-gradient(180deg, rgba(7, 11, 10, 0.96), rgba(7, 11, 10, 0.82));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,13 +147,17 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Fixed Image Rendering */
-.stock-graph-img {
+/* SVG Graph Rendering */
+.stock-graph-svg {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: contain; /* Changed from cover to contain to show full chart */
-  background: rgba(10, 15, 20, 0.8);
+}
+
+.stock-graph-midline {
+  stroke: rgba(255, 255, 255, 0.12);
+  stroke-width: 2;
+  stroke-dasharray: 2 10;
 }
 
 /* Loading State */

@@ -232,8 +232,26 @@
     transform: translateY(0);
 }
 
+.chatbot-toggle {
+    width: 64px;
+    height: 64px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 0;
+}
+
 .chatbot-toggle span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #16a34a;
+    font-size: 44px;
+    line-height: 1;
 }
 
 /* Responsive */
@@ -252,4 +270,3 @@
         height: 350px;
     }
 }
-

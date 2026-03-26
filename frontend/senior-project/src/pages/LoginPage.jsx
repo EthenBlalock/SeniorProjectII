@@ -1,13 +1,26 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword, signInWithRedirect, GoogleAuthProvider} from 'firebase/auth';
 import logo from "../assets/google.png";
 import { auth } from '../firebase';
+import { useAuth } from "../hooks/AuthContext";
 import "./formstyles.css";
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+  const { currentUser, loadingUser } = useAuth();
+
+  const provider = new GoogleAuthProvider();
+
+  useEffect(() => {
+    if (!loadingUser && currentUser) {
+      navigate("/home", { replace: true });
+    }
+  }, [currentUser, loadingUser, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -15,13 +28,25 @@ const LoginPage = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      alert('User logged in successfully!');
-      
+      navigate("/home", { replace: true });
     } catch (error) {
       setError(error.message);
       console.error("Login error:", error);
     }
   };
+
+  const handleGoogleLogin = async (e) => {
+    e.preventDefault();
+    setError(null); 
+
+    try {
+      await signInWithRedirect(auth, provider);
+    } catch (error) {
+      setError(error.message);
+      console.error("Google login error:", error);
+    }
+
+  }
 
   return (
     <div className="auth-page">
@@ -36,7 +61,7 @@ const LoginPage = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
+
             />
             </label>
 
@@ -47,7 +72,6 @@ const LoginPage = () => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
             />
             </label>
 
@@ -57,10 +81,10 @@ const LoginPage = () => {
 
             <div className="auth-divider">OR</div>
 
-            <a className="google-button" href="#">
+            <button type="button" className="google-button" onClick={handleGoogleLogin}>
             <img src={logo} alt="Google" />
             Continue with Google
-            </a>
+            </button>
         </form>
         </div>
     </div>

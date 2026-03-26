@@ -196,6 +196,22 @@
   gap: 12px;
 }
 
+.user-chip {
+  display: inline-flex;
+  align-items: center;
+  max-width: 220px;
+  padding: 10px 14px;
+  border: 1px solid rgba(34, 197, 94, 0.22);
+  border-radius: 999px;
+  background: rgba(34, 197, 94, 0.1);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* Sign Up Button */
 .signup-btn {
   position: relative;
@@ -272,6 +288,10 @@
   transform: translateY(0);
 }
 
+.logout-btn {
+  cursor: pointer;
+}
+
 /* ===================================
    RESPONSIVE
    =================================== */
@@ -332,6 +352,10 @@
 @media (max-width: 480px) {
   .nav-right {
     gap: 8px;
+  }
+
+  .user-chip {
+    display: none;
   }
 
   .signup-btn,
