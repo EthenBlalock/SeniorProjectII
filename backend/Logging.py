@@ -9,7 +9,7 @@ import CustomMethodsVI.Stream as Stream
 import CustomMethodsVI.Terminal.Struct as Struct
 
 
-def init() -> Logger.Logger:
+def init(store_old_latest: bool = True) -> Logger.Logger:
 	backend: FileSystem.Directory = FileSystem.File(__file__).parent
 	logdir: FileSystem.Directory = backend.directory('logs')
 
@@ -18,7 +18,7 @@ def init() -> Logger.Logger:
 
 	logfile: FileSystem.File = logdir.file('latest.log')
 
-	if logfile.exists():
+	if logfile.exists() and store_old_latest:
 		ctime: datetime.datetime = logfile.time_modified
 
 		with logfile.open('rb') as input_stream:

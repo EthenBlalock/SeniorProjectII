@@ -15,8 +15,8 @@ import ServerAPI
 import Logging
 
 # Setup
-logger: Logger.Logger = Logging.init()
-app: flask.Flask = flask.Flask(__name__, static_folder='Static', template_folder='Template')
+logger: Logger.Logger = Logging.init(False)
+app: flask.Flask = flask.Flask(__name__, static_folder='static', template_folder='template')
 Database.MyDatabase.load(FileSystem.File(__file__).parent.directory('database'))
 server: Connection.FlaskSocketioServer = Connection.FlaskSocketioServer(app)
 Socketio.init(server)
@@ -27,6 +27,11 @@ ServerAPI.init(app)
 @app.route('/')
 def index() -> flask.Response:
     return flask.Response('Hello World', 200)
+
+
+@app.route('/candlestick')
+def candlestick() -> flask.Response:
+    return flask.Response(flask.render_template('candlestick.html'), status=200)
 
 
 # General Functions

@@ -1,0 +1,161 @@
+body
+{
+    width: 100vw;
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    background-color: #222222;
+    overflow: hidden;
+    color: #eeeeee;
+    font-family: Impact, monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div#root
+{
+    aspect-ratio: 1/1;
+    width: auto;
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (orientation: landscape)
+{
+    div#root
+    {
+        height: 100%;
+    }
+}
+
+@media screen and (orientation: portrait)
+{
+    div#root
+    {
+        width: 100%;
+    }
+}
+
+.candlestick-root
+{
+    background: transparent;
+    border: 0.25rem solid #eeeeee;
+    border-radius: 5%;
+    margin: auto;
+    padding: 0;
+    aspect-ratio: 1/1;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.candlestick-clip
+{
+    height: 95%;
+    aspect-ratio: 1/1;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    clip-path: border-box;
+    position: relative;
+}
+.candlestick-root canvas
+{
+    height: 100%;
+    top: 0;
+    aspect-ratio: 1/1;
+    background-color: transparent;
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 1;
+}
+.candlestick-root .legend
+{
+    top: 0;
+    left: 0;
+    aspect-ratio: 3/1;
+    min-width: 25%;
+    max-width: 87.5%;
+    width: fit-content;
+    background-color: #222222;
+    position: absolute;
+    box-sizing: border-box;
+    display: none;
+    border: 0.125rem solid #eeeeee;
+    border-radius: 1rem;
+    z-index: 2;
+    box-shadow: 0 0 2.5rem #000000;
+    padding: 0.625% 1.25%;
+    justify-content: center;
+    align-items: center;
+}
+.candlestick-root .legend div
+{
+    width: fit-content;
+    height: fit-content;
+    margin: 0;
+    padding: 0;
+}
+.candlestick-root .legend p
+{
+    padding: 0;
+    margin: 1% 0;
+    letter-spacing: 0.005em;
+    font-size: 1.25em;
+}
+.candlestick-root .candlestick-table
+{
+    height: 100%;
+    top: 0;
+    aspect-ratio: 1/1;
+    background-color: transparent;
+    position: absolute;
+    box-sizing: border-box;
+    z-index: 0;
+}
+.candlestick-root .candlestick
+{
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.candlestick-root .candlestick-inner
+{
+    width: 90%;
+    border-radius: 1rem;
+    position: absolute;
+    min-width: 3px;
+    min-height: 1px;
+}
+.candlestick-root .candlestick-wick
+{
+    height: 100%;
+    position: absolute;
+    top: 0;
+    min-width: 1px;
+    min-height: 3px;
+    width: 5%;
+}
+.candlestick-root .candlestick-neutral div
+{
+    background-color: #4444ff;
+}
+.candlestick-root .candlestick-positive div
+{
+    background-color: #44ff44;
+}
+.candlestick-root .candlestick-negative div
+{
+    background-color: #ff4444;
+}

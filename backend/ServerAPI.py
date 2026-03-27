@@ -57,7 +57,7 @@ def handle_implicit_api(server: flask.Flask) -> None:
 	:param server: The flask server instance
 	"""
 
-	api: Connection.FlaskServerAPI = Connection.FlaskServerAPI(server, '/react', requires_auth=True)
+	api: Connection.FlaskServerAPI = Connection.FlaskServerAPI(server, '/react', requires_auth=True, is_timeout_daemon=True)
 	company_data: Database.MyDatabase = Database.MyDatabase.open('companies', create_if_not_found=False)
 	companies: dict[str, typing.Any] = company_data['Stocks'].wait()
 	chat_bots: dict[uuid.UUID, Chatbot.ChatBot] = {}
@@ -189,17 +189,12 @@ def handle_implicit_api(server: flask.Flask) -> None:
 	def on_chatbot(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> int | dict:
 		user_input: str = get_json_key(json, "user_input", str)
 		session_key: uuid.UUID = session.token
-		bot: Chatbot.ChatBot = chat_bots.get(session_key)
-
-		if bot is None:
-			bot = Chatbot.ChatBot()
-			chat_bots[session_key] = bot
-
+		bot: Chatbot.ChatBot = chat_bots.setdefault(session_key, Chatbot.ChatBot())
 		reply = bot.get_response(user_input)
 
 		return {
 			"reply": reply,
-			"session_key": session_key,  # optional: helpful for debugging
+			"session_key": str(session_key),  # optional: helpful for debugging
 		}
 
 
