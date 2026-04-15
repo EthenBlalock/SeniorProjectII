@@ -43,7 +43,7 @@ def candlestick() -> flask.Response:
 # General Functions
 def main() -> None:
     import waitress
-    waitress.serve(app, port=5004, threads=max(psutil.cpu_count(False) >> 1, 4))
+    waitress.serve(app, port=443, threads=max(psutil.cpu_count(False) >> 1, 4))
 
 
 def nomain() -> None:
