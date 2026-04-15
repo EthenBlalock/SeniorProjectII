@@ -3,4 +3,4 @@ waitress
 yfinance
 openai
 python-dotenv
-./custommethodsvi-1.0.3-py3-none-any.whl
+./custommethodsvi-1.0.4-py3-none-any.whl
