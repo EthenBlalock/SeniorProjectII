@@ -58,7 +58,7 @@ def handle_implicit_api(server: flask.Flask, cors: dict[str, str]) -> None:
 	:param cors: The CORS headers
 	"""
 
-	api: Connection.FlaskServerAPI = Connection.FlaskServerAPI(server, '/react', requires_auth=True, methods=('POST', 'OPTIONS'), is_timeout_daemon=True, global_response_headers=cors)
+	api: Connection.FlaskServerAPI = Connection.FlaskServerAPI(server, '/react', requires_auth=True, is_timeout_daemon=True, global_response_headers=cors)
 	company_data: Database.MyDatabase = Database.MyDatabase.open('companies', create_if_not_found=False)
 	companies: dict[str, typing.Any] = company_data['Stocks'].wait()
 	chat_bots: dict[uuid.UUID, Chatbot.ChatBot] = {}
