@@ -15,12 +15,18 @@ import ServerAPI
 import Logging
 
 # Setup
+CORS: dict[str, str] = {
+    'Access-Control-Allow-Origin': 'senior-project-ii.vercel.app',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': '*'
+}
+
 logger: Logger.Logger = Logging.init(False)
 app: flask.Flask = flask.Flask(__name__, static_folder='static', template_folder='template')
 Database.MyDatabase.load(FileSystem.File(__file__).parent.directory('database'))
 server: Connection.FlaskSocketioServer = Connection.FlaskSocketioServer(app)
 Socketio.init(server)
-ServerAPI.init(app)
+ServerAPI.init(app, CORS, {})
 
 
 # Routing
@@ -31,7 +37,7 @@ def index() -> flask.Response:
 
 @app.route('/candlestick')
 def candlestick() -> flask.Response:
-    return flask.Response(flask.render_template('candlestick.html'), status=200)
+    return flask.Response(flask.render_template('candlestick.html'), status=200, headers=CORS)
 
 
 # General Functions

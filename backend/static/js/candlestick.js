@@ -63,6 +63,8 @@
             this.root = root;
             this.canvas = null;
             this.drag_start = null;
+            this.move_start = null;
+            this.popup = null;
             this.frames = [];
             this.hover = null;
             this.update_mouse = this.update_mouse.bind(this);
@@ -85,14 +87,31 @@
             this.hover = document.createElement('div');
             this.hover.className = 'legend';
             let inner = document.createElement('div');
-            inner.appendChild(document.createElement('p'));
-            inner.appendChild(document.createElement('p'));
-            inner.appendChild(document.createElement('p'));
-            inner.appendChild(document.createElement('p'));
-            inner.appendChild(document.createElement('p'));
+            for (let i = 0; i < 5; ++i) inner.appendChild(document.createElement('p'));
             this.hover.appendChild(inner);
-
             clip.appendChild(this.hover);
+
+            this.popup = document.createElement('div');
+            this.popup.className = 'info-popup';
+            this.popup.style.display = 'none';
+            inner = document.createElement('div');
+            for (let i = 0; i < 7; ++i) inner.appendChild(document.createElement('p'));
+            this.popup.appendChild(inner);
+            clip.appendChild(this.popup);
+            this.popup.addEventListener('mousedown', (event) => {
+                if (event.button !== 0) return;
+                let bounds = this.popup.getBoundingClientRect();
+                this.move_start = [event.x - bounds.x, event.y - bounds.y];
+            });
+            this.popup.addEventListener('mouseup', (event) => {
+                if (event.button !== 0) return;
+                this.move_start = null;
+            });
+            this.popup.addEventListener('mousemove', (event) => {
+                if (event.button !== 0 || this.move_start === null) return;
+                this.popup.style.left = `${event.x - this.move_start[0]}px`;
+                this.popup.style.top = `${event.y - this.move_start[1]}px`;
+            });
 
             if (this.frames.length > 0)
             {
@@ -119,13 +138,15 @@
             this.root.appendChild(root);
             root.addEventListener('mouseleave', (e) => this.update_mouse(null));
             root.addEventListener('mousemove', this.update_mouse);
-            root.addEventListener('mousedown', (e) => this.drag_start = [e.x, e.y]);
+            root.addEventListener('mousedown', (e) => {
+                if (e.target === this.canvas && e.button === 0) this.drag_start = [e.x, e.y];
+            });
             root.addEventListener('mouseup', this.drag_select);
         }
 
         update_mouse(event)
         {
-            if (this.canvas === null) return;
+            if (this.canvas === null || (event !== null && event.target !== this.canvas)) return;
             let ctx = this.canvas.getContext('2d');
             ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             let table = document.getElementsByClassName('candlestick-table')[0] ?? null;
@@ -137,7 +158,7 @@
             let bounds = this.canvas.getBoundingClientRect();
 
             // Update legend
-            if (this.hover !== null && this.drag_start === null)
+            if (this.hover !== null && this.drag_start === null && this.move_start === null)
             {
                 let selected = this.get_candlestick_at_point(event.x, event.y);
                 if (selected === null) this.hover.style.display = 'none';
@@ -206,16 +227,55 @@
 
             // Drag Selection
             if (this.drag_start === null) return;
-            ctx.fillStyle = 'rgba(92, 92, 255, 0.25)';
-            ctx.fillRect(this.drag_start[0] - bounds.x, this.drag_start[1] - bounds.y, event.x - this.drag_start[0], event.y - this.drag_start[1]);
+            ctx.setLineDash([]);
+            let dx = this.drag_start[0] - bounds.x;
+            let dy = this.drag_start[1] - bounds.y;
+            let dw = event.x - this.drag_start[0];
+            let dh = event.y - this.drag_start[1]
+            ctx.fillStyle = 'rgba(92, 128, 255, 0.25)';
+            ctx.fillRect(dx, dy, dw, dh);
+            ctx.strokeStyle = 'rgba(128, 192, 255, 0.75)';
+            ctx.strokeRect(dx, dy, dw, dh);
         }
 
         drag_select(event)
         {
-            if (this.canvas === null) return;
+            if (this.canvas === null || event.target !== this.canvas || this.drag_start === null || event.button !== 0) return;
             for (let frame of this.frames) frame.setSelected(false);
             for (let frame of this.get_candlesticks_within_box(new DOMRect(this.drag_start[0], this.drag_start[1], event.x - this.drag_start[0], event.y - this.drag_start[1]))) frame.setSelected(true);
             this.drag_start = null;
+            this.move_start = null;
+
+            let selected = this.frames.filter((frame) => frame.selected);
+
+            if (selected.length === 0)
+            {
+                this.popup.style.display = 'none';
+                return;
+            }
+
+            let text = this.popup.getElementsByTagName('p');
+            let begin_date = new Date(selected[0].timestamp * 1000);
+            let end_date = new Date(selected[selected.length - 1].timestamp * 1000);
+            let options = {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                timeZoneName: 'short',
+                hour12: false,
+            };
+
+            text[0].innerText = `${selected.length} candlestick${(selected.length === 1) ? "" : "s"} selected`;
+            text[1].innerText = `Start Date: ${new Intl.DateTimeFormat("en-US", options).format(begin_date)}`;
+            text[2].innerText = `End Date: ${new Intl.DateTimeFormat("en-US", options).format(end_date)}`;
+            text[3].innerText = `Beginning Price: ${price_converter.format(selected[0].open)}`;
+            text[4].innerText = `Ending Price: ${price_converter.format(selected[selected.length - 1].close)}`;
+            text[5].innerText = `Highest Price: ${price_converter.format(Math.max(...selected.map((frame) => Math.max(frame.open, frame.close, frame.high, frame.low))))}`;
+            text[6].innerText = `Lowest Price: ${price_converter.format(Math.min(...selected.map((frame) => Math.min(frame.open, frame.close, frame.high, frame.low))))}`;
+            this.popup.style.display = 'flex';
         }
 
         *get_candlesticks_within_box(rect)
@@ -275,6 +335,13 @@
         })})).json();
         let candlestick = new Candlestick(root, frames);
         candlestick.draw();
+
+        if (window === window.top) return;
+        let popout = document.getElementById('popout');
+        popout.addEventListener('click', (e) => {
+            window.open(location.href, '_blank');
+        });
+        popout.style.display = 'flex';
     });
 
     window.addEventListener('beforeunload', async (e) => {

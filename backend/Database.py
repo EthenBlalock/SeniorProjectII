@@ -11,8 +11,7 @@ import CustomMethodsVI.Concurrent as Concurrent
 import CustomMethodsVI.FileSystem as FileSystem
 import CustomMethodsVI.Misc as Misc
 import CustomMethodsVI.Stream as Stream
-import CustomMethodsVI.Synchronization as Synchronization
-from CustomMethodsVI.Concurrent import ThreadedFunction
+import CustomMethodsVI.Synchronization.Threading as Synchronization
 
 
 class MyDatabase:
@@ -251,7 +250,7 @@ class MyDatabase:
 		Misc.raise_ifn(isinstance(key, str), TypeError(f'JSON keys must be a string, got object of type \'{type(key).__name__}\''))
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> None:
 			with self.__lock__.writer():
 				self.__modifications__ += 1
@@ -271,7 +270,7 @@ class MyDatabase:
 		Misc.raise_ifn(isinstance(key, str), TypeError(f'JSON keys must be a string, got object of type \'{type(key).__name__}\''))
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> bool:
 			with self.__lock__.reader():
 				return str(key) in self.__contents__
@@ -289,7 +288,7 @@ class MyDatabase:
 		Misc.raise_ifn(isinstance(key, str), TypeError(f'JSON keys must be a string, got object of type \'{type(key).__name__}\''))
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> typing.Any:
 			with self.__lock__.reader():
 				return copy.deepcopy(self.__contents__[str(key)])
@@ -372,7 +371,7 @@ class MyDatabase:
 
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> None:
 			with self.__lock__.writer():
 				self.__modifications__ += 1
@@ -391,7 +390,7 @@ class MyDatabase:
 		Misc.raise_ifn(isinstance(mapping, typing.Mapping), TypeError(f'Specified object must be a mapping instance, got object of type \'{type(mapping).__name__}\''))
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> None:
 			with self.__lock__.writer():
 				self.__modifications__ += 1
@@ -411,7 +410,7 @@ class MyDatabase:
 		Misc.raise_ifn(isinstance(mapping, typing.Mapping), TypeError(f'Specified object must be a mapping instance, got object of type \'{type(mapping).__name__}\''))
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> None:
 			with self.__lock__.writer():
 				self.__modifications__ += 1
@@ -428,7 +427,7 @@ class MyDatabase:
 
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> typing.Any:
 			with self.__lock__.reader():
 				return len(self.__contents__)
@@ -448,7 +447,7 @@ class MyDatabase:
 		Misc.raise_ifn(isinstance(key, str), TypeError(f'JSON keys must be a string, got object of type \'{type(key).__name__}\''))
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> typing.Any:
 			with self.__lock__.reader():
 				return copy.deepcopy(self.__contents__.get(str(key)))
@@ -468,7 +467,7 @@ class MyDatabase:
 		Misc.raise_ifn(isinstance(key, str), TypeError(f'JSON keys must be a string, got object of type \'{type(key).__name__}\''))
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> typing.Any:
 			with self.__lock__.writer():
 				self.__modifications__ += 1
@@ -490,7 +489,7 @@ class MyDatabase:
 		Misc.raise_ifn(isinstance(key, str), TypeError(f'JSON keys must be a string, got object of type \'{type(key).__name__}\''))
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> typing.Any:
 			with self.__lock__.writer():
 				self.__modifications__ += 1
@@ -507,7 +506,7 @@ class MyDatabase:
 
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> tuple[str, typing.Any]:
 			with self.__lock__.writer():
 				self.__modifications__ += 1
@@ -523,7 +522,7 @@ class MyDatabase:
 
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> tuple[str, ...]:
 			with self.__lock__.reader():
 				return tuple(self.__contents__.keys())
@@ -538,7 +537,7 @@ class MyDatabase:
 
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> tuple[typing.Any, ...]:
 			with self.__lock__.reader():
 				return tuple(self.__contents__.values())
@@ -560,7 +559,7 @@ class MyDatabase:
 
 		Misc.raise_if(self.closed, IOError('Operation on closed sector'))
 
-		@ThreadedFunction
+		@Concurrent.ThreadedFunction
 		def __operation__() -> dict[str, typing.Any]:
 			with self.__lock__.reader():
 				return copy.deepcopy(self.__contents__)

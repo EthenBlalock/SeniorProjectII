@@ -24,6 +24,36 @@ div#root
     align-items: center;
     margin: 0;
     padding: 0;
+    position: relative;
+}
+
+div#popout
+{
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    border: 0.125rem solid #eeeeee;
+    border-radius: 1.25em;
+    height: 10%;
+    width: auto;
+    aspect-ratio: 1/1;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    background-color: #222222;
+    box-shadow: 0 0 1em 0.5em #000000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+}
+div#popout img
+{
+    width: 75%;
+    height: 75%;
+    margin: 0;
+    padding: 0;
 }
 
 @media screen and (orientation: landscape)
@@ -56,6 +86,7 @@ div#root
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 0 1em 0.5em #000000;
 }
 .candlestick-clip
 {
@@ -76,8 +107,9 @@ div#root
     position: absolute;
     box-sizing: border-box;
     z-index: 1;
+    cursor: crosshair;
 }
-.candlestick-root .legend
+.candlestick-root .legend, .candlestick-root .info-popup
 {
     top: 0;
     left: 0;
@@ -92,24 +124,35 @@ div#root
     border: 0.125rem solid #eeeeee;
     border-radius: 1rem;
     z-index: 2;
-    box-shadow: 0 0 2.5rem #000000;
+    box-shadow: 0 0 1em 0.5em #000000;
     padding: 0.625% 1.25%;
     justify-content: center;
     align-items: center;
 }
-.candlestick-root .legend div
+.candlestick-root .info-popup
+{
+    top: 2.5%;
+    left: 2.5%;
+    cursor: grab;
+}
+.candlestick-root .legend div,  .candlestick-root .info-popup div
 {
     width: fit-content;
     height: fit-content;
     margin: 0;
     padding: 0;
 }
-.candlestick-root .legend p
+.candlestick-root .legend p,  .candlestick-root .info-popup p
 {
     padding: 0;
     margin: 1% 0;
     letter-spacing: 0.005em;
     font-size: 1.25em;
+    width: fit-content;
+}
+.candlestick-root .legend p,  .candlestick-root .info-popup p
+{
+    cursor: text;
 }
 .candlestick-root .candlestick-table
 {

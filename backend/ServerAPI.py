@@ -50,14 +50,15 @@ def axis_label(axis: str, point: tuple[float, ...]) -> str:
 	return datetime.datetime.fromtimestamp(x).strftime('%m/%d/%Y (%H:%M)') if axis == 'time' else f'${y:,.2f}'
 
 
-def handle_implicit_api(server: flask.Flask) -> None:
+def handle_implicit_api(server: flask.Flask, cors: dict[str, str]) -> None:
 	"""
 	Handles internal server API communication\n
 	API communication with front-end
 	:param server: The flask server instance
+	:param cors: The CORS headers
 	"""
 
-	api: Connection.FlaskServerAPI = Connection.FlaskServerAPI(server, '/react', requires_auth=True, is_timeout_daemon=True)
+	api: Connection.FlaskServerAPI = Connection.FlaskServerAPI(server, '/react', requires_auth=True, is_timeout_daemon=True, global_response_headers=cors)
 	company_data: Database.MyDatabase = Database.MyDatabase.open('companies', create_if_not_found=False)
 	companies: dict[str, typing.Any] = company_data['Stocks'].wait()
 	chat_bots: dict[uuid.UUID, Chatbot.ChatBot] = {}
@@ -198,14 +199,15 @@ def handle_implicit_api(server: flask.Flask) -> None:
 		}
 
 
-def handle_explicit_api(server: flask.Flask) -> None:
+def handle_explicit_api(server: flask.Flask, cors: dict[str, str]) -> None:
 	"""
 	Handles external server API communication\n
 	API communication with external clients
 	:param server: The flask server instance
+	:param cors: The CORS headers
 	"""
 
-	api: Connection.FlaskServerAPI = Connection.FlaskServerAPI(server, '/api', requires_auth=False)
+	api: Connection.FlaskServerAPI = Connection.FlaskServerAPI(server, '/api', requires_auth=False, global_response_headers=cors)
 
 	@api.endpoint('/test')
 	def on_test(session: Connection.FlaskServerAPI.APISessionInfo, json: dict[str, ...]) -> dict[str, ...]:
@@ -216,11 +218,13 @@ def handle_explicit_api(server: flask.Flask) -> None:
 		}
 
 
-def init(server: flask.Flask) -> None:
+def init(server: flask.Flask, internal_cors: dict[str, str], external_cors) -> None:
 	"""
 	Initializes all flask server API endpoints
 	:param server: The flask server instance
+	:param internal_cors: The CORS header for internal API
+	:param external_cors: The CORS header for external API
 	"""
 
-	handle_implicit_api(server)
-	handle_explicit_api(server)
+	handle_implicit_api(server, internal_cors)
+	handle_explicit_api(server, external_cors)
