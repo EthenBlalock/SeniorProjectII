@@ -4,7 +4,7 @@
 This repository contains a full-stack web application built as a senior project. The app provides finance/investing learning tools for students and is implemented with a Python/Flask backend and a JavaScript/React frontend (Vite).
 
 ## Tech stack
-- Backend: Python + Flask
+- Backend: Python + Flask + Vercel
 - Frontend: React (Vite)
 - Tooling: Node.js, npm, optional Python virtual environment
 
