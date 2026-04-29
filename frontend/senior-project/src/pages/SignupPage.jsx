@@ -8,6 +8,8 @@ import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { useAuth } from "../hooks/AuthContext";
 import "./formstyles.css";
 
+// Sign Up Page Component
+
 const SignUpPage = () => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("")
